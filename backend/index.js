@@ -1,46 +1,54 @@
-require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
-const logger = require("morgan");
-const createError = require("http-errors");
-const mongoose = require("mongoose");
-
-const port = process.env.PORT || 5000;
-
-// Express
 const app = express();
-app.use(express.json());
 
-// Cors
+// dot env config and database config
+require("dotenv").config();
+require("./config/dbConfig").dbConnect();
+
+// const userMiddleware = require("./middleware/users.middleware")
+
+// enable statements
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cors());
 
-// Bodyparser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// Here
+var base_url = "/inverntoryManagment/api/v1/public";
 
-// Morgan logger
-app.use(logger("dev"));
+// users routes
+const clientRouters = require("./routes/clientRoutes");
+app.use(base_url + "/client", clientRouters);
 
-// Routes
-mongoose.connect(process.env.DB, { useNewUrlParser: true });
+// Employees routes
+const employeeRouters = require("./routes/employeeRoutes");
+app.use(base_url + "/employee", employeeRouters);
 
-mongoose.connection
-  .once("open", () => console.log("Mongo Connected"))
-  .on("error", (e) => console.log(`ERROR: ${e}`));
+// machine routes
+const machineRouters = require("./routes/machineRoutes");
+app.use(base_url + "/machine", machineRouters);
+
+// model wise machine adding controller
+const modelByMachineRoutes = require("./routes/modelNumberRoutes");
+app.use(base_url + "/model", modelByMachineRoutes);
+
+const projectRoutes = require("./routes/ProjectRoutes");
+app.use(base_url + "/project", projectRoutes);
+
+const companyRoutes = require("./routes/CompanyRoutes");
+app.use(base_url + "/company", companyRoutes);
+
+const subComponentRoutes = require("./routes/SubComponentRoutes");
+app.use(base_url + "/subcomponent", subComponentRoutes);
+
+// Here
+const project_offerRoutes = require("./routes/Offer_projectRoutes");
+app.use(base_url + "/project_offer", project_offerRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("Hello World!");
 });
 
-// Error handler
-app.use(function (req, res, next) {
-  next(
-    createError(
-      404,
-      "Invalid API. Use the official documentation to get the list of valid APIS."
-    )
-  );
+app.listen(process.env.PORT, () => {
+  console.log("server listen on port no ", process.env.PORT);
 });
-
-app.listen(port, console.log(`Server is running on ${port}`));

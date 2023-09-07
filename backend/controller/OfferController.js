@@ -8,7 +8,7 @@ exports.newOffer = async (req, res) => {
       data: offer,
     });
   } catch (err) {
-    response.status(500).json({
+    res.status(500).json({
       message: "Error in adding offer",
       data: err,
     });

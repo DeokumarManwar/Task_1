@@ -9,7 +9,7 @@ exports.addComponent = async (req, res) => {
       data: component,
     });
   } catch (err) {
-    response.status(500).json({
+    res.status(500).json({
       message: "Error in adding Component",
       data: err,
     });

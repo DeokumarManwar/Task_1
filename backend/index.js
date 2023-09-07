@@ -45,6 +45,10 @@ app.use(base_url + "/subcomponent", subComponentRoutes);
 const project_offerRoutes = require("./routes/Offer_projectRoutes");
 app.use(base_url + "/project_offer", project_offerRoutes);
 
+// Here
+const componentRoutes = require("./routes/ComponentRoutes");
+app.use(base_url + "/component", componentRoutes);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });

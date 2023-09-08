@@ -53,6 +53,10 @@ app.use(base_url + "/component", componentRoutes);
 const offerRoutes = require("./routes/OfferRoutes");
 app.use(base_url + "/offer", offerRoutes);
 
+// Here
+const revisionRoutes = require("./routes/RevisionRoutes");
+app.use(base_url + "/revision", revisionRoutes);
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
